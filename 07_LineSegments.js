@@ -229,7 +229,6 @@ function render() {
         gl.bufferData(gl.ARRAY_BUFFER, circle.vertices, gl.STATIC_DRAW);
         gl.bindVertexArray(vao);
         // triangle fan: center + circle outline
-        gl.drawArrays(gl.TRIANGLE_FAN, 0, circle.vertices.length / 2);
         // draw circle outline (optional): same vertices but as LINE_LOOP
         shader.setVec4("u_color", [0.0, 0.6, 0.8, 1.0]);
         gl.drawArrays(gl.LINE_STRIP, 1, (circle.vertices.length / 2) - 1);
