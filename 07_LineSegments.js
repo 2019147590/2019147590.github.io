@@ -3,8 +3,8 @@
 - 1 circle 입력, 1 line segment 입력, intersection 계산/표시
 - vertex shader에서 gl_PointSize = 10.0으로 설정(쉐이더 파일 참고)
 ---------------------------------------------------------------------------*/
-import { resizeAspectRatio, setupText, updateText, Axes } from '/util.js';
-import { Shader, readShaderFile } from '/shader.js';
+import { resizeAspectRatio, setupText, updateText, Axes } from "./util.js";
+import { Shader, readShaderFile } from "./shader.js";
 
 const canvas = document.getElementById('glCanvas');
 const gl = canvas.getContext('webgl2');
