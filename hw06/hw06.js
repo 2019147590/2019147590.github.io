@@ -79,28 +79,44 @@ async function setupTexture(url) {
 }
 
 // --- 렌더링 함수 ---
+/* hw06.js -- 최종 수정본 (좌표축 함께 회전) */
+
+// ... (파일의 다른 부분은 모두 동일합니다) ...
+
+// --- 렌더링 함수 ---
 function render() {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    // 아크볼 회전을 모델 행렬에 적용
+    // 1. 아크볼 회전값을 기반으로 모델 행렬을 계산합니다.
     mat4.fromQuat(modelMatrix, currentRotation);
 
-    // 셰이더 활성화 및 행렬, 텍스처 전달
+    // --- 피라미드 그리기 ---
     shader.use();
     shader.setMat4('u_projection', projMatrix);
     shader.setMat4('u_view', viewMatrix);
-    shader.setMat4('u_model', modelMatrix);
+    shader.setMat4('u_model', modelMatrix); // 피라미드에 회전 적용
     
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, texture);
     shader.setInt('u_texture', 0);
     
-    // 피라미드와 좌표축 그리기
     pyramid.draw();
-    axes.draw(viewMatrix, projMatrix);
+    
+    // --- 좌표축 그리기 (수정된 부분) ---
+    // 2. 좌표축을 위한 새로운 뷰 행렬을 만듭니다.
+    const axesViewMatrix = mat4.create();
+    
+    // 3. 기존 뷰 행렬(viewMatrix)과 피라미드의 모델 행렬(modelMatrix)을 곱합니다.
+    // 이렇게 하면 모델의 회전이 뷰에 적용된 효과를 냅니다.
+    mat4.multiply(axesViewMatrix, viewMatrix, modelMatrix);
+
+    // 4. 새로 계산된 행렬을 사용해 좌표축을 그립니다.
+    axes.draw(axesViewMatrix, projMatrix);
 
     requestAnimationFrame(render);
 }
+
+// ... (파일의 나머지 부분은 모두 동일합니다) ...
 
 // --- 아크볼 이벤트 리스너 설정 ---
 function setupEventListeners() {
