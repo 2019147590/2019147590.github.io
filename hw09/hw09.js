@@ -77,7 +77,7 @@ function init() {
     // 1) Sun
     const sunGeometry = new THREE.SphereGeometry(10, 32, 32); // radius: 10
     const sunMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 });
-    const sunMesh = new THREE.Mesh(sunGeometry, sunMaterial);
+    const sunMesh = new THREE.Mesh(sunGeometry, material);
     scene.add(sunMesh);
 
     // 2-5) Planets
