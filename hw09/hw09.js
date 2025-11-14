@@ -1,6 +1,6 @@
 // hw09.js
 // This program fulfills the requirements for Homework 09
-// (Final version - Uses MeshBasicMaterial, NO lighting required)
+// (Final version - Uses MeshBasicMaterial, NO lighting required, Sun bug fixed)
 
 import * as THREE from 'three';
 // Import necessary add-ons
@@ -62,8 +62,6 @@ function init() {
     orbitControls.enableDamping = true;
 
     // === Lighting (Now Optional) ===
-    // We are using MeshBasicMaterial, so lights are not strictly needed
-    // but we can keep them for good practice.
     const pointLight = new THREE.PointLight(0xffffff, 3, 0);
     scene.add(pointLight);
     const ambientLight = new THREE.AmbientLight(0x222222);
@@ -77,7 +75,11 @@ function init() {
     // 1) Sun
     const sunGeometry = new THREE.SphereGeometry(10, 32, 32); // radius: 10
     const sunMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 });
-    const sunMesh = new THREE.Mesh(sunGeometry, material);
+    //
+    // ▼▼▼ BUG FIX ▼▼▼
+    // 'material' -> 'sunMaterial'
+    //
+    const sunMesh = new THREE.Mesh(sunGeometry, sunMaterial); 
     scene.add(sunMesh);
 
     // 2-5) Planets
@@ -99,12 +101,6 @@ function init() {
 function createPlanet(name, radius, distance, texture, params) {
     // 1. Create the planet's geometry and material
     const geometry = new THREE.SphereGeometry(radius, 32, 32);
-    
-    //
-    // ▼▼▼ KEY CHANGE ▼▼▼
-    // MeshStandardMaterial -> MeshBasicMaterial
-    // This makes the planet visible without any light source.
-    //
     const material = new THREE.MeshBasicMaterial({ map: texture }); 
     const mesh = new THREE.Mesh(geometry, material);
 
